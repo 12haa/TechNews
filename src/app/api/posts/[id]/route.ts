@@ -47,3 +47,20 @@ export async function PUT(
     return NextResponse.json({ message: "Error Editing Post" });
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } },
+) {
+  try {
+    const data = await prisma.post.delete({
+      where: {
+        id: params.id,
+      },
+    });
+    return NextResponse.json({ data, message: "Delete Post successfully" });
+  } catch (err) {
+    console.log(err, "error");
+    return NextResponse.json({ message: "Error Deleting Post" });
+  }
+}
