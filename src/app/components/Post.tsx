@@ -2,6 +2,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import DeleteButton from "@/app/components/DeleteButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 interface PostPageProps {
   title: string;
@@ -14,8 +16,10 @@ interface PostPageProps {
 }
 
 const isEditable = true;
-const Post = (post: PostPageProps) => {
+const Post = async (post: PostPageProps) => {
+  const session = await getServerSession(authOptions);
   const date = new Date().toLocaleDateString("en-US", {});
+  const isEditable = session && session?.user?.email === post.authorEmail;
   return (
     <div className="my-4 border-b border-gray-200  py-8">
       <div className="mb-4 ">
@@ -46,7 +50,7 @@ const Post = (post: PostPageProps) => {
       {isEditable && (
         <div className="flex gap-3 font-bold py-2 px-4 text-sm text-gray-500 bg-slate-200 w-fit rounded-md">
           <Link href={`/edit-post/${post.id}`}>Edit</Link>
-          <DeleteButton />
+          <DeleteButton id={post.id} />
         </div>
       )}
     </div>
