@@ -1,7 +1,6 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import { signIn } from "next-auth/react";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/app/lib/prismaDB";
 

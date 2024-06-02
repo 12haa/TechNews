@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/lib/prismaDB";
-import { getSession } from "next-auth/react";
+import { getServerSession, Session } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function POST(req: Request) {
+  const session = await getServerSession(authOptions);
+  const authorEmail = session?.user?.email as string;
+  if (!session)
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   const { title, content, links, selectedCategory, imageUrl, publicId } =
     await req.json();
-  const authorEmail = "mkhaefi2500@yahoo.com";
   if (!title || !content)
     return NextResponse.json(
       { error: "Title and content are required" },
@@ -35,6 +39,9 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
+  const session = getServerSession(authOptions);
+  if (!session)
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   try {
     const posts = await prisma.post.findMany({
       include: {
