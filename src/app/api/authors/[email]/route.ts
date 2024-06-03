@@ -10,15 +10,12 @@ export async function GET(
     const authors = await prisma.user.findUnique({
       where: { email },
       include: {
-        posts: {
-          orderBy: {
-            createdAt: "desc",
-          },
-        },
+        posts: {},
       },
     });
-    return NextResponse.json({ authors, message: "author Fetched" });
+    return NextResponse.json(authors);
   } catch (err: any) {
+    console.log(err);
     return NextResponse.json({ message: err.message }, { status: 400 });
   }
 }

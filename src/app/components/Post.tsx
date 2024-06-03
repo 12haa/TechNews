@@ -13,6 +13,7 @@ interface PostPageProps {
   id: string;
   author?: string;
   category?: string;
+  link?: string[];
 }
 
 const isEditable = true;
@@ -20,6 +21,7 @@ const Post = async (post: PostPageProps) => {
   const session = await getServerSession(authOptions);
   const date = new Date().toLocaleDateString("en-US", {});
   const isEditable = session && session?.user?.email === post.authorEmail;
+  console.log(post.image, "im post . image");
   return (
     <div className="my-4 border-b border-gray-200  py-8">
       <div className="mb-4 ">
@@ -29,9 +31,9 @@ const Post = async (post: PostPageProps) => {
         {post.image ? (
           <Image
             fill
-            src={post.image}
+            src={`/${post.image}`}
             alt={post.image}
-            className="object-cover rounded-md object-center  "
+            className="object-cover rounded-md object-center w-96 he-96 "
           />
         ) : (
           <p>No Images to Show</p>
@@ -47,6 +49,9 @@ const Post = async (post: PostPageProps) => {
       )}
       <h2 className="">{post.title}</h2>
       <p className="content">{post.description}</p>
+      <Link className="text-blue-900 font-medium" href={`${post.link}`}>
+        {post.link}
+      </Link>
       {isEditable && (
         <div className="flex gap-3 font-bold py-2 px-4 text-sm text-gray-500 bg-slate-200 w-fit rounded-md">
           <Link href={`/edit-post/${post.id}`}>Edit</Link>

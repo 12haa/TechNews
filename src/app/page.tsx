@@ -20,16 +20,17 @@ const getPosts = async (): Promise<TPost[] | null> => {
 
 export default async function Home() {
   const postsData = await getPosts();
+  console.log(postsData, "Post Data");
   return (
     <>
       <CategoriesList />
       {postsData && postsData.length > 0 ? (
-        postsData.map((post, index) => (
+        postsData.map((post: TPost, index) => (
           <Post
             key={post.id}
             id={post.id}
             title={post.title}
-            image={post.imageUrl as string}
+            image={post.imageUrl || " "}
             authorEmail={post.authorEmail}
             author={post.author.name}
             description={post.content}

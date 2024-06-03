@@ -7,12 +7,10 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import { TPost } from "@/app/types"; // Import CSS first
-
 const getPosts = async (email: string) => {
   try {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/authors/${email}`);
     const { posts } = await res.json();
-
     return posts;
   } catch (err) {
     console.log(err);
@@ -30,6 +28,8 @@ const DashboardPage = async () => {
   if (email) {
     postArray = await getPosts(email);
   }
+  console.log(postArray, "Post Array");
+
   return (
     <div>
       <h1>My Posts</h1>
@@ -39,11 +39,12 @@ const DashboardPage = async () => {
             key={post.id}
             id={post.id}
             title={post.title}
-            image={post.imageUrl as string}
+            image={post.imageUrl || ""}
             authorEmail={post.authorEmail}
-            author={post.author.name}
+            author={session?.user?.name || undefined}
             description={post.content}
             category={post.catName}
+            link={post.links || []}
           />
         ))
       ) : (
