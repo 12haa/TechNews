@@ -24,6 +24,7 @@ const EditPostPage = async ({ params }: { params: { id: string } }) => {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/sign-in");
   const posts = await getPost(id);
+  console.log(posts, "Posts from edit post form");
   return (
     <>
       {posts ? (

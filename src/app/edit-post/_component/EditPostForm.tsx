@@ -3,7 +3,6 @@ import { TCategory, TPost } from "@/app/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-// import { CldUploadButton, CldUploadWidgetResults } from "next-cloudinary";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import {
@@ -12,7 +11,7 @@ import {
 } from "next-cloudinary";
 import { FaUpload } from "react-icons/fa";
 // import toast from "react-hot-toast";
-export default function EditPostForm({ post }: { post: TPost }) {
+export default function EditPostForm(post: any) {
   const [links, setLinks] = useState<string[]>([]);
   const [linkInput, setLinkInput] = useState("");
   const [title, setTitle] = useState("");
