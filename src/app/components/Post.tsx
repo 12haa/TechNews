@@ -3,8 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import DeleteButton from "@/app/components/DeleteButton";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-
+import authOptions from "@/app/lib/auth";
 interface PostPageProps {
   title: string;
   description: string;

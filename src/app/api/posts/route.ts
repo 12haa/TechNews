@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/lib/prismaDB";
 import { getServerSession, Session } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-
+import authOptions from "@/app/lib/auth";
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
   const authorEmail = session?.user?.email as string;

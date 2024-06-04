@@ -2,7 +2,7 @@ import React from "react";
 import Post from "@/app/components/Post";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import authOptions from "@/app/lib/auth";
 import { redirect } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import { TPost } from "@/app/types"; // Import CSS first
