@@ -1,5 +1,4 @@
 import React from "react";
-import { postData } from "@/data";
 import Post from "@/app/components/Post";
 import Link from "next/link";
 import { getServerSession } from "next-auth";

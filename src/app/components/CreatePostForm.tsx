@@ -3,10 +3,14 @@ import { TCategory } from "@/app/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-// import { CldUploadButton, CldUploadWidgetResults } from "next-cloudinary";
+import {
+  CldUploadButton,
+  CloudinaryUploadWidgetResults,
+} from "next-cloudinary";
 import Image from "next/image";
 import { toast } from "react-toastify";
-// import toast from "react-hot-toast";
+import { FaUpload } from "react-icons/fa";
+
 export default function CreatePostForm() {
   const [links, setLinks] = useState<string[]>([]);
   const [linkInput, setLinkInput] = useState("");
@@ -25,19 +29,18 @@ export default function CreatePostForm() {
     };
     fetchAllCategories();
   }, []);
-  // const handleImageUpload = (result: CldUploadWidgetResults) => {
-  //   console.log("result: ", result);
-  //   const info = result.info as object;
-  //
-  //   if ("secure_url" in info && "public_id" in info) {
-  //     const url = info.secure_url as string;
-  //     const public_id = info.public_id as string;
-  //     setImageUrl(url);
-  //     setPublicId(public_id);
-  //     console.log("url: ", url);
-  //     console.log("public_id: ", public_id);
-  //   }
-  // };
+  const handleImageUpload = (result: CloudinaryUploadWidgetResults) => {
+    console.log("result: ", result);
+    const info = result.info as object;
+    if ("secure_url" in info && "public_id" in info) {
+      const url = info.secure_url as string;
+      const public_id = info.public_id as string;
+      setImageUrl(url);
+      setPublicId(public_id);
+      console.log("url: ", url);
+      console.log("public_id: ", public_id);
+    }
+  };
   const addLink = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (linkInput.trim() !== "") {
@@ -45,27 +48,28 @@ export default function CreatePostForm() {
       setLinkInput("");
     }
   };
+  // Delete Link handler
   const deleteLink = (index: number) => {
     setLinks((prev) => prev.filter((_, i) => i !== index));
   };
-  // const removeImage = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //
-  //   try {
-  //     const res = await fetch("api/removeImage", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ publicId }),
-  //     });
-  //
-  //     if (res.ok) {
-  //       setImageUrl("");
-  //       setPublicId("");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  // Remove Image Handler
+  const removeImage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("api/removeImage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ publicId }),
+      });
+      if (res.ok) {
+        setImageUrl("");
+        setPublicId("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // Form Submit Handler
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !content) {
@@ -176,6 +180,34 @@ export default function CreatePostForm() {
             Add
           </button>
         </div>
+        {/*Image Upload button*/}
+        <CldUploadButton
+          uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
+          className={`h-48 border-2 mt-4 border-dotted grid place-items-center bg-slate-100 rounded-md relative  ${imageUrl && "pointer-events-none"}
+          `}
+          onSuccess={handleImageUpload}
+        >
+          <div className="">
+            <FaUpload />
+          </div>
+          {imageUrl && (
+            <Image
+              src={imageUrl}
+              fill
+              className="absolute object-cover inset-0"
+              alt={title}
+            />
+          )}
+        </CldUploadButton>
+        {publicId && (
+          <div
+            className=" py-2 pr-4 rounded-md font-bold w-fit bg-red-600 text-white mb-4"
+            onClick={removeImage}
+          >
+            Remove Image
+          </div>
+        )}
+
         <select
           onChange={(e) => setSelectedCategory(e.target.value)}
           className="p-3 rounded-md border appearance-none"
