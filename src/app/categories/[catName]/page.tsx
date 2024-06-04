@@ -36,6 +36,7 @@ export default async function CategoryPosts({
       {posts && posts.length > 0 ? (
         posts.map((post: TPost) => (
           <Post
+            key={post.id}
             title={post.title}
             description={post.content}
             image={post.imageUrl || ""}
