@@ -37,11 +37,11 @@ export default async function CategoryPosts({
         posts.map((post: TPost, i) => (
           <Post
             key={i}
-            title={post.title}
-            description={post.content}
+            title={post.title || ""}
+            description={post.content || ""}
             image={post.imageUrl || ""}
             authorEmail={post.authorEmail}
-            id={post.id}
+            id={post.id || ""}
             author={session?.user?.email || ""}
             category={post.catName}
             link={post.links || []}
