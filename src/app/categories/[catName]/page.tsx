@@ -34,9 +34,9 @@ export default async function CategoryPosts({
       </h1>
 
       {posts && posts.length > 0 ? (
-        posts.map((post: TPost) => (
+        posts.map((post: TPost, i) => (
           <Post
-            key={post.id}
+            key={i}
             title={post.title}
             description={post.content}
             image={post.imageUrl || ""}
@@ -48,7 +48,7 @@ export default async function CategoryPosts({
           />
         ))
       ) : (
-        <div className="py-6">No posts to display</div>
+        <div className="py-6 ">No posts to display</div>
       )}
     </>
   );
