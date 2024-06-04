@@ -5,6 +5,7 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
 const authOptions: AuthOptions = {
+  // @ts-ignore
   adapter: PrismaAdapter(prisma),
   providers: [
     GithubProvider({
